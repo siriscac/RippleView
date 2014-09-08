@@ -33,12 +33,12 @@ View that imitates Ripple Effect on click which was introduced in Android L.
 		
 #Customization
 
-There are two attributes which are applicable to 'RippleView'.
+There are two attributes which are applicable to `RippleView`.
 
   * `rippleColor` Color of the Ripple
   * `alphaFactor` Opacity of the Ripple
   
-  * You can also set these attributes from your java code by calling setRippleColor(rippleColor, alphaFactor) *
+  * You can also set these attributes from your java code by calling `setRippleColor(rippleColor, alphaFactor)`
 
 #Compatibility
   
