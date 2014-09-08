@@ -28,7 +28,7 @@ View that imitates Ripple Effect on click which was introduced in Android L.
 			
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(getApplicationContext(), "Ripples Yo! :D", Toast.LENGTH_LONG).show();
+				//your code
 			}
 		});
        
