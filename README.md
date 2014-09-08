@@ -22,7 +22,8 @@ View that imitates Ripple Effect on click which was introduced in Android L.
     
 3. In your `onCreate` method refer to the View and add 'OnClickListener' for the same.
 
-    mButton = (RippleView) findViewById(R.id.btn);
+        
+    	mButton = (RippleView) findViewById(R.id.btn);
         mButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -30,7 +31,7 @@ View that imitates Ripple Effect on click which was introduced in Android L.
 				Toast.makeText(getApplicationContext(), "Ripples Yo! :D", Toast.LENGTH_LONG).show();
 			}
 		});
-		
+       
 #Customization
 
 There are two attributes which are applicable to `RippleView`.
