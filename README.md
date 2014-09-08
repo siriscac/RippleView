@@ -51,7 +51,7 @@ There are two attributes which are applicable to `RippleView`.
 
   * Initial Build
   
-# Developed By
+# Author
 
   * Muthuramakrishnan - <siriscac@gmail.com>
 
