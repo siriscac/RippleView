@@ -2,6 +2,7 @@
 
 View that imitates Ripple Effect on click which was introduced in Android L.
 
+![Sample Screenshot](https://raw.github.com/siriscac/RippleView/master/Screens/Screen.gif)
 
 #Usage
 
