@@ -39,6 +39,10 @@ There are two attributes which are applicable to 'RippleView'.
   * `alphaFactor` Opacity of the Ripple
   
   * You can also set these attributes from your java code by calling setRippleColor(rippleColor, alphaFactor) *
+
+#Compatibility
+  
+  * Android 4.0.3+
   
 # Changelog
 
