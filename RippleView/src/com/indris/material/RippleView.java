@@ -16,6 +16,7 @@ package com.indris.material;
  * limitations under the License.
  */
 
+import android.view.animation.AccelerateInterpolator;
 import com.indris.R;
 
 import android.animation.Animator;
@@ -48,6 +49,7 @@ public class RippleView extends Button {
     private float mAlphaFactor;
 
     private float mRadius;
+    private float mMaxRadius;
 
     private int mRippleColor;
     private boolean isAnimating = false;
@@ -101,13 +103,20 @@ public class RippleView extends Button {
     }
 
     @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        mMaxRadius = (float) Math.sqrt((w / 2) * (w / 2) + (h / 2) * (h / 2));
+    }
+
+    @Override
     public boolean onTouchEvent(@NonNull final MotionEvent event) {
         if (event.getActionMasked() == MotionEvent.ACTION_DOWN && !isAnimating) {
             mDownX = event.getX();
             mDownY = event.getY();
 
-            ObjectAnimator radAnim = ObjectAnimator.ofFloat(this, "radius", 0, getWidth() * 3.0f);
-            radAnim.setDuration(500);
+            ObjectAnimator radAnim = ObjectAnimator.ofFloat(this, "radius", 0, mMaxRadius);
+            radAnim.setDuration(5000);
+            radAnim.setInterpolator(new AccelerateInterpolator());
             radAnim.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animator) {
@@ -172,15 +181,15 @@ public class RippleView extends Button {
 			return;
 		}
 		
-        mPath2.reset();
-        mPath2.addCircle(mDownX, mDownY, mRadius, Path.Direction.CW);
-
-        canvas.clipPath(mPath2);
-
-        mPath.reset();
-        mPath.addCircle(mDownX, mDownY, mRadius / 3, Path.Direction.CW);
-
-        canvas.clipPath(mPath, Region.Op.INTERSECT);
+//        mPath2.reset();
+//        mPath2.addCircle(mDownX, mDownY, mRadius, Path.Direction.CW);
+//
+//        canvas.clipPath(mPath2);
+//
+//        mPath.reset();
+//        mPath.addCircle(mDownX, mDownY, mRadius / 3, Path.Direction.CW);
+//
+//        canvas.clipPath(mPath, Region.Op.INTERSECT);
         canvas.drawCircle(mDownX, mDownY, mRadius, mPaint);
     }
 
