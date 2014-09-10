@@ -58,7 +58,6 @@ public class RippleView extends Button {
     private RadialGradient mRadialGradient;
     private Paint mPaint;
 
-
     public RippleView(Context context) {
         super(context);
         init();
@@ -83,6 +82,7 @@ public class RippleView extends Button {
     }
 
 	public void init() {
+
         mPaint = new Paint();
         mPaint.setAlpha(100);
         setRippleColor(Color.BLACK, 0.2f);
@@ -105,7 +105,7 @@ public class RippleView extends Button {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mMaxRadius = (float) Math.sqrt((w / 2) * (w / 2) + (h / 2) * (h / 2));
+        mMaxRadius = (float) Math.sqrt(w * w + h * h);
     }
 
     @Override
@@ -114,9 +114,12 @@ public class RippleView extends Button {
             mDownX = event.getX();
             mDownY = event.getY();
 
-            ObjectAnimator radAnim = ObjectAnimator.ofFloat(this, "radius", 0, mMaxRadius);
-            radAnim.setDuration(5000);
-            radAnim.setInterpolator(new AccelerateInterpolator());
+            final float tempRadius = (float) Math.sqrt(mDownX * mDownX + mDownY * mDownY);
+            float targetRadius = Math.max(tempRadius, mMaxRadius - tempRadius);
+
+            ObjectAnimator radAnim = ObjectAnimator.ofFloat(this, "radius", 0, targetRadius);
+            radAnim.setDuration((long) (800 * targetRadius / mMaxRadius));
+            radAnim.setInterpolator(new AccelerateInterpolator(1.25f));
             radAnim.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animator) {
