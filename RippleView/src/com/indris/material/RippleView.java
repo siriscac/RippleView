@@ -108,7 +108,7 @@ public class RippleView extends Button {
         Log.d("mIsAnimating", String.valueOf(mIsAnimating));
         Log.d("mAnimationIsCancel", String.valueOf(mAnimationIsCancel));
         boolean superResult = super.onTouchEvent(event);
-        if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
+        if (event.getActionMasked() == MotionEvent.ACTION_DOWN && this.isEnabled()) {
             mRect = new Rect(getLeft(), getTop(), getRight(), getBottom());
             mAnimationIsCancel = false;
             mDownX = event.getX();
@@ -120,7 +120,7 @@ public class RippleView extends Button {
             if(!superResult){
                 return true;
             }
-        } else if (event.getActionMasked() == MotionEvent.ACTION_MOVE) {
+        } else if (event.getActionMasked() == MotionEvent.ACTION_MOVE && this.isEnabled()) {
             mDownX = event.getX();
             mDownY = event.getY();
             
@@ -133,7 +133,7 @@ public class RippleView extends Button {
             if(!superResult){
                 return true;
             }
-        } else if (event.getActionMasked() == MotionEvent.ACTION_UP && !mAnimationIsCancel) {
+        } else if (event.getActionMasked() == MotionEvent.ACTION_UP && !mAnimationIsCancel && this.isEnabled()) {
             mDownX = event.getX();
             mDownY = event.getY();
 
