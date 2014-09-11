@@ -49,7 +49,12 @@ There are two attributes which are applicable to `RippleView`.
   
 # Changelog
 
-### Current Version: 1.0
+### Current Version: 1.1
+
+  * Improved Animation
+  * Added Hover Effect (Thanks to [yanghui](https://github.com/kyze8439690))
+  
+### Version: 1.0
 
   * Initial Build
   
