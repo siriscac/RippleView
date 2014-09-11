@@ -50,15 +50,14 @@ public class RippleView extends Button {
     private int mRippleColor;
     private boolean mIsAnimating = false;
 
-
     private RadialGradient mRadialGradient;
     private Paint mPaint;
     private ObjectAnimator mRadiusAnimator;
 
     private float mDensity;
 
-    private int dp(int dp){
-        return (int)(dp * mDensity + 0.5f);
+    private int dp(int dp) {
+        return (int) (dp * mDensity + 0.5f);
     }
 
     public RippleView(Context context) {
@@ -69,22 +68,28 @@ public class RippleView extends Button {
     public RippleView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RippleView);
-        mRippleColor = a.getColor(R.styleable.RippleView_rippleColor,mRippleColor);
-        mAlphaFactor = a.getFloat(R.styleable.RippleView_alphaFactor, mAlphaFactor);
+        TypedArray a = context.obtainStyledAttributes(attrs,
+                R.styleable.RippleView);
+        mRippleColor = a.getColor(R.styleable.RippleView_rippleColor,
+                mRippleColor);
+        mAlphaFactor = a.getFloat(R.styleable.RippleView_alphaFactor,
+                mAlphaFactor);
         a.recycle();
     }
 
     public RippleView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RippleView);
-        mRippleColor = a.getColor(R.styleable.RippleView_rippleColor,mRippleColor);
-        mAlphaFactor = a.getFloat(R.styleable.RippleView_alphaFactor, mAlphaFactor);
+        TypedArray a = context.obtainStyledAttributes(attrs,
+                R.styleable.RippleView);
+        mRippleColor = a.getColor(R.styleable.RippleView_rippleColor,
+                mRippleColor);
+        mAlphaFactor = a.getFloat(R.styleable.RippleView_alphaFactor,
+                mAlphaFactor);
         a.recycle();
     }
 
-	public void init() {
+    public void init() {
         mDensity = getContext().getResources().getDisplayMetrics().density;
 
         mPaint = new Paint();
@@ -94,10 +99,12 @@ public class RippleView extends Button {
         normal.getPaint().setColor(Color.parseColor("#00FFFFFF"));
         StateListDrawable states = new StateListDrawable();
 
-        states.addState(new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled}, normal);
-        states.addState(new int[]{android.R.attr.state_focused, android.R.attr.state_enabled}, normal);
-        states.addState(new int[]{android.R.attr.state_enabled}, normal);
-        states.addState(new int[]{-android.R.attr.state_enabled}, normal);
+        states.addState(new int[] { android.R.attr.state_pressed,
+                android.R.attr.state_enabled }, normal);
+        states.addState(new int[] { android.R.attr.state_focused,
+                android.R.attr.state_enabled }, normal);
+        states.addState(new int[] { android.R.attr.state_enabled }, normal);
+        states.addState(new int[] { -android.R.attr.state_enabled }, normal);
         setBackgroundDrawable(states);
     }
 
@@ -117,36 +124,36 @@ public class RippleView extends Button {
 
     @Override
     public boolean onTouchEvent(@NonNull final MotionEvent event) {
-        if(event.getActionMasked() == MotionEvent.ACTION_DOWN){
+        if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
             mDownX = event.getX();
             mDownY = event.getY();
 
-            mRadiusAnimator = ObjectAnimator.ofFloat(this, "radius", 0, dp(50))
-                    .setDuration(100);
-            mRadiusAnimator.setInterpolator(new DecelerateInterpolator());
+            mRadiusAnimator = ObjectAnimator.ofFloat(this, "radius", 0, dp(50)).setDuration(500);
+            mRadiusAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
             mRadiusAnimator.start();
 
-        }else if (event.getActionMasked() == MotionEvent.ACTION_MOVE){
+        } else if (event.getActionMasked() == MotionEvent.ACTION_MOVE) {
             mRect = new RectF(getLeft(), getTop(), getRight(), getBottom());
-
             mDownX = event.getX();
             mDownY = event.getY();
-
-            if(mAnimationIsCancel = !mRect.contains(mDownX, mDownY)) {  //move outside, cancel the ripple animation
+            
+            // Cancel the ripple animation when moved outside 
+            if (mAnimationIsCancel = !mRect.contains(mDownX, mDownY)) { 
                 setRadius(0);
-            }else{
+            } else {
                 setRadius(dp(50));
             }
-        }else if (event.getActionMasked() == MotionEvent.ACTION_UP && !mIsAnimating && !mAnimationIsCancel) {
+        } else if (event.getActionMasked() == MotionEvent.ACTION_UP && !mIsAnimating && !mAnimationIsCancel) {
             mDownX = event.getX();
             mDownY = event.getY();
 
             final float tempRadius = (float) Math.sqrt(mDownX * mDownX + mDownY * mDownY);
             float targetRadius = Math.max(tempRadius, mMaxRadius - tempRadius);
 
-            mRadiusAnimator = ObjectAnimator.ofFloat(this, "radius", dp(50), targetRadius);
-            mRadiusAnimator.setDuration(400);
-            mRadiusAnimator.setInterpolator(new AccelerateInterpolator());
+            mRadiusAnimator = ObjectAnimator.ofFloat(this, "radius", dp(50),
+                    targetRadius);
+            mRadiusAnimator.setDuration(500);
+            mRadiusAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
             mRadiusAnimator.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animator) {
@@ -187,14 +194,9 @@ public class RippleView extends Button {
     public void setRadius(final float radius) {
         mRadius = radius;
         if (mRadius > 0) {
-            mRadialGradient = new RadialGradient(
-                    mDownX,
-                    mDownY,
-                    mRadius,
-                    adjustAlpha(mRippleColor, mAlphaFactor),
-                    mRippleColor,
-                    Shader.TileMode.MIRROR
-            );
+            mRadialGradient = new RadialGradient(mDownX, mDownY, mRadius,
+                    adjustAlpha(mRippleColor, mAlphaFactor), mRippleColor,
+                    Shader.TileMode.MIRROR);
             mPaint.setShader(mRadialGradient);
         }
         invalidate();
@@ -206,18 +208,18 @@ public class RippleView extends Button {
     protected void onDraw(@NonNull final Canvas canvas) {
         super.onDraw(canvas);
 
-		if (isInEditMode()) {
-			return;
-		}
+        if (isInEditMode()) {
+            return;
+        }
 
         canvas.save(Canvas.CLIP_SAVE_FLAG);
-		
+
         mPath.reset();
         mPath.addCircle(mDownX, mDownY, mRadius, Path.Direction.CW);
 
         canvas.clipPath(mPath);
         canvas.restore();
-
+        
         canvas.drawCircle(mDownX, mDownY, mRadius, mPaint);
     }
 
