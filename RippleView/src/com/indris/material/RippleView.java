@@ -148,7 +148,7 @@ public class RippleView extends Button {
             mDownY = event.getY();
 
             final float tempRadius = (float) Math.sqrt(mDownX * mDownX + mDownY * mDownY);
-            float targetRadius = Math.max(tempRadius, mMaxRadius - tempRadius);
+            float targetRadius = Math.max(tempRadius, mMaxRadius);
 
             mRadiusAnimator = ObjectAnimator.ofFloat(this, "radius", dp(50),
                     targetRadius);
