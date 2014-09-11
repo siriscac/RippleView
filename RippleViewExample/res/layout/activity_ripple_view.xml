@@ -10,29 +10,19 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.indris.sample.RippleViewActivity" >
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" >
-
-        <TextView
-            android:id="@+id/textView1"
+    <com.indris.material.RippleView
+            android:id="@+id/btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/click_me"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:background="@drawable/card_bk"
             android:gravity="center"
             android:padding="35dp"
-            android:text="@string/click_me"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <com.indris.material.RippleView
-            android:id="@+id/btn"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             ripple:alphaFactor="0.7"
-            ripple:rippleColor="#58FAAC" >
-        </com.indris.material.RippleView>
-    </FrameLayout>
+            ripple:rippleColor="#58FAAC"
+
+            />
 
 </RelativeLayout>
