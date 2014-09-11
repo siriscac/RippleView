@@ -20,13 +20,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.*;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.StateListDrawable;
-import android.graphics.drawable.shapes.RectShape;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import com.indris.R;
@@ -34,7 +30,6 @@ import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.view.ViewHelper;
 
-@SuppressWarnings("deprecation")
 @SuppressLint("ClickableViewAccessibility")
 
 public class RippleView extends Button {
@@ -42,18 +37,18 @@ public class RippleView extends Button {
     private float mDownX;
     private float mDownY;
     private float mAlphaFactor;
-
+    private float mDensity;
     private float mRadius;
     private float mMaxRadius;
 
+
     private int mRippleColor;
     private boolean mIsAnimating = false;
+    private boolean mHover = true;
 
     private RadialGradient mRadialGradient;
     private Paint mPaint;
     private ObjectAnimator mRadiusAnimator;
-
-    private float mDensity;
 
     private int dp(int dp) {
         return (int) (dp * mDensity + 0.5f);
@@ -93,6 +88,11 @@ public class RippleView extends Button {
         mAlphaFactor = alphaFactor;
     }
 
+    public void setHover(boolean enabled)
+    {
+        mHover = enabled;
+    }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -108,7 +108,7 @@ public class RippleView extends Button {
         Log.d("mIsAnimating", String.valueOf(mIsAnimating));
         Log.d("mAnimationIsCancel", String.valueOf(mAnimationIsCancel));
         boolean superResult = super.onTouchEvent(event);
-        if (event.getActionMasked() == MotionEvent.ACTION_DOWN && this.isEnabled()) {
+        if (event.getActionMasked() == MotionEvent.ACTION_DOWN && this.isEnabled() && mHover) {
             mRect = new Rect(getLeft(), getTop(), getRight(), getBottom());
             mAnimationIsCancel = false;
             mDownX = event.getX();
@@ -120,7 +120,7 @@ public class RippleView extends Button {
             if(!superResult){
                 return true;
             }
-        } else if (event.getActionMasked() == MotionEvent.ACTION_MOVE && this.isEnabled()) {
+        } else if (event.getActionMasked() == MotionEvent.ACTION_MOVE && this.isEnabled() && mHover) {
             mDownX = event.getX();
             mDownY = event.getY();
             
