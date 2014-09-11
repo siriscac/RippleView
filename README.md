@@ -45,7 +45,7 @@ There are two attributes which are applicable to `RippleView`.
 
 #Compatibility
   
-  * Android 2.3+
+  * Android GingerBread 2.3+
   
 # Changelog
 
