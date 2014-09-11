@@ -45,11 +45,16 @@ There are two attributes which are applicable to `RippleView`.
 
 #Compatibility
   
-  * Android 4.0.3+
+  * Android 2.3+
   
 # Changelog
 
-### Current Version: 1.1
+### Current Version: 1.2
+
+  * Added GingerBread Support
+  * Bug fixes
+   
+### Version: 1.1
 
   * Improved Animation
   * Added Hover Effect (Thanks to [yanghui](https://github.com/kyze8439690))
