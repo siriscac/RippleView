@@ -16,24 +16,23 @@ package com.indris.material;
  * limitations under the License.
  */
 
-import android.graphics.*;
-import android.util.Log;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
-import com.indris.R;
-
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.*;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.RectShape;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
+import com.indris.R;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.ObjectAnimator;
+import com.nineoldandroids.view.ViewHelper;
 
 @SuppressWarnings("deprecation")
 @SuppressLint("ClickableViewAccessibility")
@@ -61,8 +60,11 @@ public class RippleView extends Button {
     }
 
     public RippleView(Context context) {
-        super(context);
-        init();
+        this(context, null);
+    }
+
+    public RippleView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
     }
 
     public RippleView(Context context, AttributeSet attrs, int defStyle) {
@@ -77,40 +79,18 @@ public class RippleView extends Button {
         a.recycle();
     }
 
-    public RippleView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-        TypedArray a = context.obtainStyledAttributes(attrs,
-                R.styleable.RippleView);
-        mRippleColor = a.getColor(R.styleable.RippleView_rippleColor,
-                mRippleColor);
-        mAlphaFactor = a.getFloat(R.styleable.RippleView_alphaFactor,
-                mAlphaFactor);
-        a.recycle();
-    }
-
     public void init() {
         mDensity = getContext().getResources().getDisplayMetrics().density;
 
-        mPaint = new Paint();
+        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setAlpha(100);
         setRippleColor(Color.BLACK, 0.2f);
-        ShapeDrawable normal = new ShapeDrawable(new RectShape());
-        normal.getPaint().setColor(Color.parseColor("#00FFFFFF"));
-        StateListDrawable states = new StateListDrawable();
 
-        states.addState(new int[] { android.R.attr.state_pressed,
-                android.R.attr.state_enabled }, normal);
-        states.addState(new int[] { android.R.attr.state_focused,
-                android.R.attr.state_enabled }, normal);
-        states.addState(new int[] { android.R.attr.state_enabled }, normal);
-        states.addState(new int[] { -android.R.attr.state_enabled }, normal);
-        setBackgroundDrawable(states);
     }
 
     public void setRippleColor(int rippleColor, float alphaFactor) {
-        this.mRippleColor = rippleColor;
-        this.mAlphaFactor = alphaFactor;
+        mRippleColor = rippleColor;
+        mAlphaFactor = alphaFactor;
     }
 
     @Override
@@ -119,37 +99,50 @@ public class RippleView extends Button {
         mMaxRadius = (float) Math.sqrt(w * w + h * h);
     }
 
-    private RectF mRect;
     private boolean mAnimationIsCancel;
+    private Rect mRect;
 
     @Override
-    public boolean onTouchEvent(@NonNull final MotionEvent event) {
+    public boolean onTouchEvent(final MotionEvent event) {
+        Log.d("TouchEvent", String.valueOf(event.getActionMasked()));
+        Log.d("mIsAnimating", String.valueOf(mIsAnimating));
+        Log.d("mAnimationIsCancel", String.valueOf(mAnimationIsCancel));
+        boolean superResult = super.onTouchEvent(event);
         if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
+            mRect = new Rect(getLeft(), getTop(), getRight(), getBottom());
+            mAnimationIsCancel = false;
             mDownX = event.getX();
             mDownY = event.getY();
 
-            mRadiusAnimator = ObjectAnimator.ofFloat(this, "radius", 0, dp(50)).setDuration(500);
+            mRadiusAnimator = ObjectAnimator.ofFloat(this, "radius", 0, dp(50)).setDuration(400);
             mRadiusAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
             mRadiusAnimator.start();
-
+            if(!superResult){
+                return true;
+            }
         } else if (event.getActionMasked() == MotionEvent.ACTION_MOVE) {
-            mRect = new RectF(getLeft(), getTop(), getRight(), getBottom());
             mDownX = event.getX();
             mDownY = event.getY();
             
             // Cancel the ripple animation when moved outside 
-            if (mAnimationIsCancel = !mRect.contains(mDownX, mDownY)) { 
+            if (mAnimationIsCancel = !mRect.contains(getLeft() + (int) event.getX(), getTop() + (int) event.getY())) {
                 setRadius(0);
             } else {
                 setRadius(dp(50));
             }
-        } else if (event.getActionMasked() == MotionEvent.ACTION_UP && !mIsAnimating && !mAnimationIsCancel) {
+            if(!superResult){
+                return true;
+            }
+        } else if (event.getActionMasked() == MotionEvent.ACTION_UP && !mAnimationIsCancel) {
             mDownX = event.getX();
             mDownY = event.getY();
 
             final float tempRadius = (float) Math.sqrt(mDownX * mDownX + mDownY * mDownY);
             float targetRadius = Math.max(tempRadius, mMaxRadius);
 
+            if(mIsAnimating){
+                mRadiusAnimator.cancel();
+            }
             mRadiusAnimator = ObjectAnimator.ofFloat(this, "radius", dp(50),
                     targetRadius);
             mRadiusAnimator.setDuration(500);
@@ -163,7 +156,7 @@ public class RippleView extends Button {
                 @Override
                 public void onAnimationEnd(Animator animator) {
                     setRadius(0);
-                    setAlpha(1);
+                    ViewHelper.setAlpha(RippleView.this, 1);
                     mIsAnimating = false;
                 }
 
@@ -178,9 +171,11 @@ public class RippleView extends Button {
                 }
             });
             mRadiusAnimator.start();
-
+            if(!superResult){
+                return true;
+            }
         }
-        return super.onTouchEvent(event);
+        return superResult;
     }
 
     public int adjustAlpha(int color, float factor) {
@@ -205,7 +200,7 @@ public class RippleView extends Button {
     private Path mPath = new Path();
 
     @Override
-    protected void onDraw(@NonNull final Canvas canvas) {
+    protected void onDraw(final Canvas canvas) {
         super.onDraw(canvas);
 
         if (isInEditMode()) {
@@ -219,7 +214,7 @@ public class RippleView extends Button {
 
         canvas.clipPath(mPath);
         canvas.restore();
-        
+
         canvas.drawCircle(mDownX, mDownY, mRadius, mPaint);
     }
 
