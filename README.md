@@ -36,12 +36,13 @@ View that imitates Ripple Effect on click which was introduced in Android L.
        
 #Customization
 
-There are two attributes which are applicable to `RippleView`.
+There are three attributes which are applicable to `RippleView`.
 
   * `rippleColor` Color of the Ripple
   * `alphaFactor` Opacity of the Ripple
+  * `hover` Hover effect on the button
   
-  * You can also set these attributes from your java code by calling `setRippleColor(rippleColor, alphaFactor)`
+  * You can also set these attributes from your java code by calling `setRippleColor(rippleColor, alphaFactor)` and `setHover(enabled)` respectively.
 
 #Compatibility
   
@@ -51,6 +52,7 @@ There are two attributes which are applicable to `RippleView`.
 
 ### Current Version: 1.2
 
+  * Added option to enable or disable Hover
   * Added GingerBread Support
   * Bug fixes
    
