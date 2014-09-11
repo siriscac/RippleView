@@ -31,7 +31,6 @@ import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.view.ViewHelper;
 
 @SuppressLint("ClickableViewAccessibility")
-
 public class RippleView extends Button {
 
     private float mDownX;
@@ -40,7 +39,6 @@ public class RippleView extends Button {
     private float mDensity;
     private float mRadius;
     private float mMaxRadius;
-
 
     private int mRippleColor;
     private boolean mIsAnimating = false;
@@ -71,6 +69,7 @@ public class RippleView extends Button {
                 mRippleColor);
         mAlphaFactor = a.getFloat(R.styleable.RippleView_alphaFactor,
                 mAlphaFactor);
+        mHover = a.getBoolean(R.styleable.RippleView_hover, mHover);
         a.recycle();
     }
 
@@ -88,8 +87,7 @@ public class RippleView extends Button {
         mAlphaFactor = alphaFactor;
     }
 
-    public void setHover(boolean enabled)
-    {
+    public void setHover(boolean enabled) {
         mHover = enabled;
     }
 
@@ -108,45 +106,54 @@ public class RippleView extends Button {
         Log.d("mIsAnimating", String.valueOf(mIsAnimating));
         Log.d("mAnimationIsCancel", String.valueOf(mAnimationIsCancel));
         boolean superResult = super.onTouchEvent(event);
-        if (event.getActionMasked() == MotionEvent.ACTION_DOWN && this.isEnabled() && mHover) {
+        if (event.getActionMasked() == MotionEvent.ACTION_DOWN
+                && this.isEnabled() && mHover) {
             mRect = new Rect(getLeft(), getTop(), getRight(), getBottom());
             mAnimationIsCancel = false;
             mDownX = event.getX();
             mDownY = event.getY();
 
-            mRadiusAnimator = ObjectAnimator.ofFloat(this, "radius", 0, dp(50)).setDuration(400);
-            mRadiusAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+            mRadiusAnimator = ObjectAnimator.ofFloat(this, "radius", 0, dp(50))
+                    .setDuration(400);
+            mRadiusAnimator
+                    .setInterpolator(new AccelerateDecelerateInterpolator());
             mRadiusAnimator.start();
-            if(!superResult){
+            if (!superResult) {
                 return true;
             }
-        } else if (event.getActionMasked() == MotionEvent.ACTION_MOVE && this.isEnabled() && mHover) {
+        } else if (event.getActionMasked() == MotionEvent.ACTION_MOVE
+                && this.isEnabled() && mHover) {
             mDownX = event.getX();
             mDownY = event.getY();
-            
-            // Cancel the ripple animation when moved outside 
-            if (mAnimationIsCancel = !mRect.contains(getLeft() + (int) event.getX(), getTop() + (int) event.getY())) {
+
+            // Cancel the ripple animation when moved outside
+            if (mAnimationIsCancel = !mRect.contains(
+                    getLeft() + (int) event.getX(),
+                    getTop() + (int) event.getY())) {
                 setRadius(0);
             } else {
                 setRadius(dp(50));
             }
-            if(!superResult){
+            if (!superResult) {
                 return true;
             }
-        } else if (event.getActionMasked() == MotionEvent.ACTION_UP && !mAnimationIsCancel && this.isEnabled()) {
+        } else if (event.getActionMasked() == MotionEvent.ACTION_UP
+                && !mAnimationIsCancel && this.isEnabled()) {
             mDownX = event.getX();
             mDownY = event.getY();
 
-            final float tempRadius = (float) Math.sqrt(mDownX * mDownX + mDownY * mDownY);
+            final float tempRadius = (float) Math.sqrt(mDownX * mDownX + mDownY
+                    * mDownY);
             float targetRadius = Math.max(tempRadius, mMaxRadius);
 
-            if(mIsAnimating){
+            if (mIsAnimating) {
                 mRadiusAnimator.cancel();
             }
             mRadiusAnimator = ObjectAnimator.ofFloat(this, "radius", dp(50),
                     targetRadius);
             mRadiusAnimator.setDuration(500);
-            mRadiusAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+            mRadiusAnimator
+                    .setInterpolator(new AccelerateDecelerateInterpolator());
             mRadiusAnimator.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animator) {
@@ -171,7 +178,7 @@ public class RippleView extends Button {
                 }
             });
             mRadiusAnimator.start();
-            if(!superResult){
+            if (!superResult) {
                 return true;
             }
         }

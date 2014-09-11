@@ -22,7 +22,7 @@
             android:padding="35dp"
             ripple:alphaFactor="0.7"
             ripple:rippleColor="#58FAAC"
-
-            />
+            ripple:hover="true"
+     />
 
 </RelativeLayout>
