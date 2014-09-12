@@ -9,21 +9,21 @@ View that imitates Ripple Effect on click which was introduced in Android L.
 #Usage
 
 *For a working implementation, Have a look at the Sample Project - RippleViewExample*
+##RippleButton
 
 1. Include the library as local library project.
 
-2. Include the RippleView widget in your layout inside the FrameLayout with the View for which you want to add the Ripple Effect.
+2. Include the RippleButton widget in your layout.
 
-    <com.indris.material.RippleView
+    <com.indris.material.RippleButton
             android:id="@+id/btn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             ripple:alphaFactor="0.7"
             ripple:rippleColor="#58FAAC" >
-    </com.indris.material.RippleView>
+    </com.indris.material.RippleButton>
     
 3. In your `onCreate` method refer to the View and add 'OnClickListener' for the same.
-
         
     	mButton = (RippleView) findViewById(R.id.btn);
         mButton.setOnClickListener(new View.OnClickListener() {
@@ -34,9 +34,18 @@ View that imitates Ripple Effect on click which was introduced in Android L.
 			}
 		});
        
+##RippleView Helper
+
+   You can now add the ripple effect to any view by attaching your view to a RippleViewHelper. Simply do,
+  
+		
+	new RippleViewHelper(this, mButton).setRippleColor(color, alphaFactor);
+
+
+	
 #Customization
 
-There are three attributes which are applicable to `RippleView`.
+There are three attributes which are applicable to `RippleButton`.
 
   * `rippleColor` Color of the Ripple
   * `alphaFactor` Opacity of the Ripple
@@ -50,6 +59,11 @@ There are three attributes which are applicable to `RippleView`.
   
 # Changelog
 
+### Current Version: 1.3 [Under developement]
+
+  * Added RippleViewHelper (Ripple effect for any view)
+  * Bug fixes
+  
 ### Current Version: 1.2
 
   * Added option to enable or disable Hover
