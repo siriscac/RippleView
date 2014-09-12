@@ -9,7 +9,7 @@ View that imitates Ripple Effect on click which was introduced in Android L.
 #Usage
 
 *For a working implementation, Have a look at the Sample Project - RippleViewExample*
-##RippleButton
+###RippleButton
 
 1. Include the library as local library project.
 
@@ -34,7 +34,7 @@ View that imitates Ripple Effect on click which was introduced in Android L.
 			}
 		});
        
-##RippleView Helper
+###RippleViewHelper
 
    You can now add the ripple effect to any view by attaching your view to a RippleViewHelper. Simply do,
   
