@@ -12,7 +12,7 @@ View that imitates Ripple Effect on click which was introduced in Android L.
 
 1. Include the library as local library project.
 
-2. Include the RippleView widget in your layout inside the FrameLayout with the View for which you want to add the Ripple Effect.
+2. Include the RippleView widget in your layout.
 
     <com.indris.material.RippleView
             android:id="@+id/btn"
