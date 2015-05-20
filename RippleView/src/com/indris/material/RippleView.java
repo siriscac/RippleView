@@ -117,6 +117,29 @@ public class RippleView extends Button {
                     .setDuration(400);
             mRadiusAnimator
                     .setInterpolator(new AccelerateDecelerateInterpolator());
+            mRadiusAnimator.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animator) {
+                    mIsAnimating = true;
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animator) {
+                    setRadius(0);
+                    ViewHelper.setAlpha(RippleView.this, 1);
+                    mIsAnimating = false;
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animator) {
+
+                }
+            });
             mRadiusAnimator.start();
             if (!superResult) {
                 return true;
