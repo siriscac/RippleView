@@ -1,12 +1,12 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-RippleView-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/923)
 
-#RippleView
+# RippleView
 
 View that imitates Ripple Effect on click which was introduced in Android L.
 
 ![Sample Screenshot](https://raw.github.com/siriscac/RippleView/master/Screens/Screen.gif)
 
-#Usage
+# Usage
 
 *For a working implementation, Have a look at the Sample Project - RippleViewExample*
 
@@ -34,7 +34,7 @@ View that imitates Ripple Effect on click which was introduced in Android L.
 			}
 		});
        
-#Customization
+# Customization
 
 There are three attributes which are applicable to `RippleView`.
 
@@ -44,7 +44,7 @@ There are three attributes which are applicable to `RippleView`.
   
   * You can also set these attributes from your java code by calling `setRippleColor(rippleColor, alphaFactor)` and `setHover(enabled)` respectively.
 
-#Compatibility
+# Compatibility
   
   * Android GingerBread 2.3+
   
