@@ -14,6 +14,7 @@ View that imitates Ripple Effect on click which was introduced in Android L.
 
 2. Include the RippleView widget in your layout.
 
+    ```xml
     <com.indris.material.RippleView
             android:id="@+id/btn"
             android:layout_width="match_parent"
@@ -21,18 +22,19 @@ View that imitates Ripple Effect on click which was introduced in Android L.
             ripple:alphaFactor="0.7"
             ripple:rippleColor="#58FAAC" >
     </com.indris.material.RippleView>
+    ```
     
 3. In your `onCreate` method refer to the View and add 'OnClickListener' for the same.
 
-        
-    	mButton = (RippleView) findViewById(R.id.btn);
-        mButton.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				//your code
-			}
-		});
+    ```java    
+    mButton = (RippleView) findViewById(R.id.btn);
+    mButton.setOnClickListener(new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			//your code
+		}
+    });
+    ```
        
 # Customization
 
